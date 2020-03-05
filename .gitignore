@@ -1,3 +1,36 @@
+
+# Created by https://www.gitignore.io/api/tex,macos
+# Edit at https://www.gitignore.io/?templates=tex,macos
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+### TeX ###
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
@@ -109,8 +142,6 @@ acs-*.bib
 *.glo
 *.gls
 *.glsdefs
-*.lzo
-*.lzs
 
 # uncomment this for glossaries-extra (will ignore makeindex's style files!)
 # *.ist
@@ -228,9 +259,8 @@ pythontex-files-*/
 # xindy
 *.xdy
 
-# xypic precompiled matrices and outlines
+# xypic precompiled matrices
 *.xyc
-*.xyd
 
 # endfloat
 *.ttt
@@ -253,14 +283,8 @@ TSWLatexianTemp*
 # Kile
 *.backup
 
-# gummi
-.*.swp
-
 # KBibTeX
 *~[0-9]*
-
-# TeXnicCenter
-*.tps
 
 # auto folder when using emacs and auctex
 ./auto/*
@@ -272,5 +296,8 @@ TSWLatexianTemp*
 # standalone packages
 *.sta
 
-# Makeindex log files
-*.lpz
+### TeX Patch ###
+# glossaries
+*.glstex
+
+# End of https://www.gitignore.io/api/tex,macos

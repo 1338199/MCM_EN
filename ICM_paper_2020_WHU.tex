@@ -171,8 +171,38 @@ As mentioned above, reputation will fluctuate with time, so the curve we fit wil
 In order to facilitate processing, we only consider a set of maxima and minima of the curve when modeling. We can cluster the stars and reviews near the maxima and minima of the curve to find the topic words and stars with the highest word frequency. When these themes and stars appear, it means that the reputation of the product will probably usher in a turning point.
 
 In our experiment, it is found that when 'baby cant' and 2-3 stars appear, the reputation of the product will decline, so the product will become a potential failure product; when 'baby love' and 4-5 stars appear, the reputation of the product will rise, and the product will become a potential success product.
+
+\subsubsection{Relationship between specific star ratings and more reviews}
+Whether a particular star rating will cause more comments. We can judge this is a statistical problem and one-way ANOVA can be used. We need to count the average star rating in the previous period and the total number of comments in the next period to find their relationship. Take pacifier for example.
+\begin{itemize}
+	\item First of all, we selected the most commented samples in pacifier, which is 'philips avent bpa free soothie pacifier, 0-3 months, 2 pack, packaging may vary'(833 samples).
+	\item Then we count the number of comments between different time periods of the product and the average star rating before the time period.
+	\item Because the independent variable only has star rating, we discretize it into high star rating, medium star rating and low star rating. Then we use one-way ANOVA to find the relationship between star ratings and reviews.
+	\item Finally, according to the statistics, we found that
+	The relationship between the average star rating in the current time and the total number of comments in the next time period is not strong, but after the semantic analysis of the comments, we divide the comments into positive comments, medium comments and bad comments. We found that in the face of a period of time when products are low stars, users are more willing to give negative comments; in the face of a period of time when products are high stars, users are more willing to give positive comments.
+\end{itemize}
+
+\subsubsection{Relationship between specific quality descriptors of text-based reviews and rating levels}
+The topic asks us to find out whether the specific words appearing in the comment, such as "disappointed", "enthusiasm", will be related to the rating of the comment. Because we are looking for the relationship between the data, we can determine whether this is a statistical problem. We can still use one-way ANOVA, taking the blower as an example.
+\begin{itemize}
+	\item First of all, we make word frequency statistics for the comments in the hair dryer, and select the words with higher frequency.
+
+	\item Then, we select the comment with key words in the hair dryer. We code the comment 0 or 1 based on whether it contains key words or not.
+	
+	\item Then because the independent variable only contains keywords, we continue to use one-way ANOVA to find the relationship between keywords and star ratings.
+	
+	\item Finally, according to the statistics, we found that
+	comments with the keyword "disappointed" are closely related to star rating of one star, and comments with the keyword "love" or "great" or "good" are closely related to star rating of five stars.
+\end{itemize}
+
+
+
+
 \section{Assumptions and justifications}
 To simplify the problem, we strive for the following assumptions:
+
+
+
 \begin{itemize}
 	\item Users can't see the rating stars of other users long ago. 
 	
@@ -183,6 +213,11 @@ To simplify the problem, we strive for the following assumptions:
 	\item Poor reviews with high star rating exists.
 	\item Positive reviews with low star rating also exist.
 	\item Reviews are more valuable than ratings.
+	\item Users can see the rating stars of previous users before commenting, but can't see the rating stars of users long ago. That is, only the average star rating of the previous time period can affect the comments of the next time period.
+	
+	\item Comments on emotional tendencies are consistent with star ratings.
+	
+	\item Star ratings in a time period satisfies the normal distribution.
 	
 %	\item \textbf{The mass of annual plastic production equals to that of the annual plastic waste.} On the one hand, every pound of plastic produced will turn into waste. On the other hand, the lifeline of most sorts of plastic is under 20 so that given situation will not change acutely\cite{Geyer}.
 %	
@@ -228,7 +263,8 @@ Important symbols that in this article are listed in Table \ref{notation}.
 		$\mu$ & Compensate.\\
 		$\theta$ & The percentage of GDP plastic industry contributes, quantified by coefficient.\\
 		$\iota$ & Tossil fuel consumption percentage. Generally, $\iota$ equals 4\%.\\
-		$k$ & Proportional coefficient of carbon emission per unit ofenergy consumption\\
+		$k$ & Proportional coefficient of carbon emission per unit of
+energy consumption\\
 		\bottomrule 
 		\label{notation}
 	\end{tabular} 
@@ -465,6 +501,169 @@ From the clustering results, we can conclude that:
 	\item If the reviews are full of words like 'baby love', 'easy to hold', 'onto love' with 4-5 star ratings, it means that the reputation of the product will usher in a maximum value and it is a potential successful product. So it's recommended for Sunshine Company to grow the portability of pacifiers.
 	\item If the reviews are full of words like 'baby cant', 'baby not', 'without soothing' with 2-3 star ratings, it means that the reputation of the product will usher in a minimum value and it is a potential failing product. And we recommend Sunshine Company to fix the soothing problem with the specific pacifier.
 \end{itemize}
+\subsection{Model to the relationship between specific star ratings and more reviews}
+Because there are only specific star ratings can cause more comments from users. Obviously, there is only one independent variable, so we use one-way ANOVA \cite{ross2017one}. Our Model is built as follows.\\
+\begin{enumerate}
+	\item We first filter the data and select the most representative samples of each type of product:
+	\begin{itemize}
+		\item \textbf{Pacifier: }'philips avent bpa free soothie pacifier, 0-3 months, 2 pack, packaging may vary'，833 samples。
+		\item \textbf{Hair Dryer: }'remington ac2015 t|studio salon collection pearl ceramic hair dryer, deep purple', 587 samples。
+		\item \textbf{Microwave: }'danby 0.7 cu.ft. countertop microwave', 394 samples。
+	\end{itemize}
+	\item Further, we screen samples to remove comments whose star ratings are inconsistent with comments.
+	\item Then we split the time into $d $ days (generally 7 days for business) and assume that the comments in the next period are related to the average star rating in the previous period. Next, the average star rating $\overline{s_j} $ of the $i $ product in the $j$-th time period and the number of comments in the next time period $C_{j + 1} $. We need to mine the relationship between $\overline{s_j} $ and $C_{j + 1} $:
+
+	The average star level can be any value between $[1,5] $. For the convenience of seeking the relationship, we can discretize it by dividing $[1,5] $ into four sections, each section is corresponding to one class, and then $\overline{s_j} $ is divided into different classes according to its value. So, the question is translated into, whether a specific star rating range corresponds to $C_{j + 1} $. Because we only consider the influence of star rating, we use one-way ANOVA.
+\end{enumerate}
+One-way analysis of variance requires that all variables follow normal distribution, and the variance is uniform\\
+\begin{table}[H]
+	\center
+	\caption{Test of Homogeneity of Variances}
+	\label{type}
+	\begin{tabular}{c|c|c|c}
+		\hline
+		\textbf{Levene Statistic} & \textbf{df1}& \textbf{df2}& \textbf{Sig.} \\ \hline 
+		2.054                     & 2           & 812         & 0.129         \\ \hline
+	\end{tabular}
+\end{table}
+From the graph, we find that the variance is homogeneous, and we can use one-way ANOVA：\\
+\begin{table}[H]
+	\center
+	\caption{ANOVA}
+	\label{type}
+	\begin{tabular}{c|c|c|c|c|c}
+		\hline
+		\textbf{ } & \textbf{Sum of Squares} & \textbf{df}& \textbf{Mean Square}& \textbf{F}&  \textbf{Sig.} \\ \hline 
+		Between Groups                     & 12.31           & 2         & 6.15    &16.599 &0.001   \\ 
+		Within Groups                     & 13402.85          & 812         & 16.51    &  & \\ \hline		
+	\end{tabular}
+\end{table}
+We can see from the picture that:
+\begin{itemize}
+	\item The relationship between the average stars in the current time period and the total number of comments in the next time period is not strong
+\end{itemize}
+Later, we made a semantic analysis of the comments.
+\begin{enumerate}
+	\item According to the results of semantic analysis, we divide comments into positive comments, medium comments and negative comments.
+	\item Then we calculated the relationship between the proportion of positive comments, medium comments and negative comments and $A_p $
+\end{enumerate}
+The final statistical results are as follows:\\
+
+\begin{table}[H]
+	\center
+	\caption{Descriptive of the percentage of negative comment}
+	\label{type}
+	\begin{tabular}{c|c|c|c|c|c|c}
+		\hline
+		\textbf{rating} & \textbf{N} & \textbf{Mean}& \textbf{Std.Deviation}& \textbf{Std.Error}& \textbf{F}& \textbf{Sig.} \\ \hline 
+		2        & 2             & 56.25           & 8.83         & 6.25    & 16.599 & 0.001    \\
+		3          & 18           & 36.64           & 42.52         & 10.05    &  & \\
+		4            & 175         & 8.68           & 19.47         & 1.47    &  & \\ \hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\center
+	\caption{Descriptive of the percentage of medium comment}
+	\label{type}
+	\begin{tabular}{c|c|c|c|c|c|c}
+		\hline
+		\textbf{rating} & \textbf{N} & \textbf{Mean}& \textbf{Std.Deviation}& \textbf{Std.Error}& \textbf{F}& \textbf{Sig.} \\ \hline 
+		2        & 2             & 37.50           & 17.68         & 12.50    & 0.40 & 0.671    \\
+		3          & 18           & 20.40           & 27.16         & 6.40    &  & \\
+		4            & 175         & 22.32           & 25.52         & 1.93    &  & \\ \hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\center
+	\caption{Descriptive of the percentage of medium comment}
+	\label{type}
+	\begin{tabular}{c|c|c|c|c|c|c}
+		\hline
+		\textbf{rating} & \textbf{N} & \textbf{Mean}& \textbf{Std.Deviation}& \textbf{Std.Error}& \textbf{F}& \textbf{Sig.} \\ \hline 
+		2        & 2             & 6.25           & 8.83         & 6.25    & 9.828 & 0.001    \\
+		3          & 18           & 42.95           & 40.88         & 9.64    &  & \\
+		4            & 175         & 68.99           & 29.36         & 2.21    &  & \\ \hline
+	\end{tabular}
+\end{table}
+
+From the figure we can draw the following conclusions:
+\begin{itemize}
+	\item In the face of a period of time when products are low star rating, users are more willing to give negative comments.
+	\item In the face of a period of time when products are high star rating, users are more willing to give positive comments.
+\end{itemize}
+
+\subsection{Model to the relationship between specific quality descriptors of text-based reviews and rating levels}
+To determine whether there is a relationship between keywords and star ratings in the comments, it is obvious that there is only one independent variable, so we still use one-way ANOVA. Our model to relationship between specific quality descriptors of text-based reviews and rating levels based on one way ANOVA is established as follows:\\
+\begin{enumerate}
+	\item We first filter the data and find the specific quality descriptors with high frequency, such as "disappointed", "love", "great".
+	\item Further, we also filter samples, because some people will add "not" before "disappointed" to make the meaning opposite. So we need to remove these samples.
+	\item Based on whether the comments contain keywords, we divided the samples. And based on this, one-way ANOVA is carried out.
+\end{enumerate}
+The final statistical results are as follows:\\
+\begin{table}[H]
+	\center
+	\caption{"disappointed"}
+	\label{type}
+	\begin{tabular}{c|c|c|c|c|c|c}
+		\hline
+		\textbf{} & \textbf{N} & \textbf{Mean}& \textbf{Std.Deviation}& \textbf{Std.Error}& \textbf{F}& \textbf{Sig.} \\ \hline 
+		0        & 11250             & 4.16           & 1.27         & 0.012    & 745.936 & 0.000    \\
+		1          & 220          & 1.82           & 0.84         & 0.06    &  & \\ \hline
+
+	\end{tabular}
+\end{table}
+\begin{table}[H]
+	\center
+	\caption{"love"}
+	\label{type}
+	\begin{tabular}{c|c|c|c|c|c|c}
+		\hline
+		\textbf{} & \textbf{N} & \textbf{Mean}& \textbf{Std.Deviation}& \textbf{Std.Error}& \textbf{F}& \textbf{Sig.} \\ \hline 
+		0        & 9042             & 3.97           & 1.36         & 0.01    & 553.465 & 0.000    \\
+		1          & 2428          & 4.65           & 0.85         & 0.02    &  & \\ \hline
+
+	\end{tabular}
+\end{table}
+\begin{table}[H]
+	\center
+	\caption{"great"}
+	\label{type}
+	\begin{tabular}{c|c|c|c|c|c|c}
+		\hline
+		\textbf{} & \textbf{N} & \textbf{Mean}& \textbf{Std.Deviation}& \textbf{Std.Error}& \textbf{F}& \textbf{Sig.} \\ \hline 
+		0        & 8700             & 3.99           & 1.37         & 0.02    & 346.118 & 0.000    \\
+		1          & 2770          & 4.51           & 0.93         & 0.02    &  & \\ \hline
+	\end{tabular}
+\end{table}
+
+These show that the distribution of star ratings are significantly affected by the key words. Now we use histogram to show the specific distribution：
+\\
+\begin{figure}[H]
+	\begin{minipage}[t]{0.48\linewidth}	
+	\centering
+	\includegraphics[width=1.0\textwidth]{figures/dis.png}
+	\caption{Fitting Curve of Reputations of Pacifier}	  
+	\end{minipage}
+	\hfill
+	\begin{minipage}[t]{0.48\linewidth}	
+	\centering
+	\includegraphics[width=1.0\textwidth]{figures/love.png}
+	\caption{Fitting Curve of Reputations of Hair Dryer}	  
+	\end{minipage}
+	\end{figure}
+	\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.48\textwidth]{figures/great.png}
+	\caption{Fitting Curve of Reputations of Microwave}	  
+	\end{figure}
+From the figure we can draw the following conclusions:
+\begin{itemize}
+	\item Comments with the keyword "disappointed" are closely related to star rating of one star;
+	\item Comments with the keyword "love" or "great" or "good" are closely related to star rating of five stars.
+\end{itemize}
+
 
 \section{Sensitivity Analysis}
 \subsection{Hyper-parameter $\beta$}
@@ -501,7 +700,7 @@ We can see that although the absolute value of reputation has changed, the relat
 
 \subsection{Weaknesses}
 \textbf{Lack of sales in given data.} If the sales volume corresponding to the product can be provided in the given data, then our model will be better tested in practice.
-
+\textbf{Limited data.} The sample size is not enough, which leads to that our classification of star rating is not fine and the lack of obvious relationship between medium star rating and comments.
 \section{Conclusion}
 
 To mitigate the plastic waste problem, we establish a linear programming base model to estimate the environmental impacts of plastic waste, and get the maximal plastic waste amount without further damage to environment. It is proved that the most extent plastic can be reduced to could be confirmed by HSVR model. A minimal target amount of plastic usage is achieved by expending HSVR model. The equity issue can also be solved by dual programming and sensitivity analysis of factors. Finally, we reckon a timeline to approach this realistic minimal target of plastic using amount. 
@@ -571,7 +770,6 @@ Our fitting model uses a powerful RBF neural network to fit the relationship bet
 Our statistical model uses one-way ANOVA. After analyzing the average star rating of products in the past period of time and customers' comments of products, we find that when customers see products with lower star rating, they are more willing to publish negative comments; When they see products with higher star rating, they are more willing to publish positive comments. Therefore, we suggest that your company should try its best to improve the products before launching the products, so as to avoid more bad comments caused by low star rating, which will lead to a vicious circle.
 
 We also finds that some words in the comments are related to specific star ratings. For example, the reviews with "disappointed" are closely related to the star rating of one star, reviews with "love" and "great" are closely related to the star rating of five stars. Therefore, we suggest that companies should focus on extracting reviews with emotional words, research and analysis, and optimize products in a timely manner.
-%第e问的分析与结果结论，以及意见. 
 
 We would be very pleased if our suggestion could be of benefit to your company. Wish the given advice above would contribute to your work! 
 

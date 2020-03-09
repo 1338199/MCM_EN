@@ -58,7 +58,7 @@
 %%
 \documentclass{mcmthesis}
 \mcmsetup{CTeX = false,   % 使用 CTeX 套装时，设置为 true
-        tcn = 2013573, problem = E,
+        tcn = 2013573, problem = C,
         sheet = true, titleinsheet = true, keywordsinsheet = true,
         titlepage = false, abstract = true}
 \usepackage{newtxtext}%\usepackage{palatino}
@@ -140,24 +140,24 @@ Wish the given advice above would contribute to your work!
 \section{Introduction}
 \subsection{Background}
 
-The plastic industry can date back to1950s. Over the past 60 years, the production of plastic has grown rapidly, which has surpassed most other artificial materials\cite{Geyer}. While people then did not realize the potential negative influence of plastic usage to ecosystem, plastic waste gradually accumulated in the environment because of it’s non-biodegradable trait. Some scholar believe that plastic bags and Styrofoam containers can take up to 1,000 years to decompose\cite{Giacovelli}. 6,300Mt plastic waste has been generated in 2015, while only 9\% of which had been recycled and reused. 12\% of them were incinerated and the percentage of plastics that discarded in landfills or natural environment was up to 79\%\cite{Geyer}. Plastics in nature especially in the ocean will cause a series of ecological problems. Apart form the chemical affects to organisms, plastic ingestion and entanglement are also threatening the diversity of species\cite{LI}. It is easy to imagine that if no measure is taken, human will facing severe degradation and pollution caused by enormous plastic waste.
-
-Besides, the management of the plastic waste is one of the hardest issue on integrated municipal solid waste. There are many researches that focus on the plastic recovery routes based on the life cycle assessment approach (LCA) \cite{Rigamonti}, and a few methods to assess the impact of solid waste system and technologies, which aim at develop more effective ways to migrate the plastic waste problem\cite{Kirkeby}.
-
-However, it seems that there are few researchers that explored the valuation model of estimating the maximal use of plastics nor utility policy to reduce the usage of plastics remarkably. That indicates there is still room for further explanation in this area. 
+For e-commerce platforms such as Amazon, there is no shortage of the customer's ratings and reviews. Ratings are usually expressed in five grades of 1 to 5 stars, while reviews are expressed in text form, giving customers the opportunity to show their feedback. But how to make good use of this huge rating and reviewing data is also a big challenge. Taking good advantage of these data can not only help companies to provide targeted customer service, find potential high sales and low sales goods but also help them adjust operational strategies, or enhance products in a timely manner.\cite{zhang2006lord}
 
 %The management of the plastic waste is one of the most controversial topic in the discussion on integrated municipal solid waste area.
 
 \subsection{Problem statement}
 
-Living in the age that are characterized by a series of  troublesome environmental problems, such as global warming, desertification, pollution of water and poor air quality. Our team is hired to estimate the maximal permitted amount of plastic products, migrate the plastic production and reduce plastic waste. In another word, we need to answer the following questions:
+Now, Sunshine Company plans to launch three new products to sell online: microwave, pacifier and hair dryer. The company has obtained historical ratings and comments from customers of these three products. They hope to dig out effective information from reviews and ratings to help companies better formulate sales strategies and enhance the effectiveness of products. They hope that the following problems can be reasonably solved:
 
 \begin{enumerate}
-	\item What is the maximal level of single-use or disposable plastic products without further pollution?
-	\item What extent can plastic waste be reduced to?
-	\item What is the minimal achievable level of global single-use or disposable plastic products and what are the impact on certain facets of reaching this level?
-	\item How to solve the equity problem about plastic waste that arise from global crisis?
-	\item How to build a timeline to approuch our target level we set before and describe our exploration to ICM?
+	\item What is the relationship between product star rating, review and help votes? Can we quantify the reviews and explore the mathematical relationship among them?
+	\item Based on task1 to address the following specific requests from the Sunshine Company Marketing Director:
+	\begin{enumerate}
+	\item How to build a model that can integrate ratings and reviews, and help company get effective information and adjust marketing strategies?
+	\item How to describe the reputation of the product from the perspective of time, so as to see and predict the change of the product's reputation in the online market?
+	\item Based on text evaluation and rating, how to find potential successful or failed products?
+	\item Is there a relationship between a specific star rating and the number of reviews? In other words, what kind of ratings attract customers to comment?
+	\item Are subject words of a review, such as "happy", "disappointed" related to specific ratings?
+	\end{enumerate}
 \end{enumerate}
 
 %\subsection{Our work}
@@ -175,7 +175,32 @@ Living in the age that are characterized by a series of  troublesome environment
 
 \section{Model Analysis}
 \subsection{Analysis of task 1}
+\subsection{Analysis of task 2}
+\subsubsection{Rating-review based reputation model}
+\indent We can infer the reputation of a product from its star rating and reviews. The better the reputation of a product, the higher the potential sales volume of the product. 
 
+Here, we can't simply measure the reputation of a product by star rating or evaluation alone, because there are often situations of "five star with negative feedback" or "one star with praise". Therefore, we integrate star ratings and reviews to build a reputation model. By comparing the reputation of products, Sunshine Company can enhance the stock and publicity of products with high reputation.
+
+In similar way, the reputation calculation needs to first carry out LDA processing on the reviews of a product, and then convert them into discrete level values. 
+
+In order to consider the credibility of the reviews, we also consider several fields such as vine, verified\_purchase, helpful\_votes, and total\_votes, which can measure the accuracy of the review, because reviews with product experience are more credible, and reviews of high helpful votes are more referential.
+
+By modeling and calculating the pacifier samples with more than 25 comments from July to August 2015, we find that in July to August, the reputation of sample 'wubbanub soft toy and pacifier' is higher and the sales prospect is the largest; the reputation of 'Philips aventbpa free another pacifier, 3 + months, green, 2 count' is the lowest and the sales prospect is the worst.
+
+\subsubsection{Relations between time and reputation}
+The reputation of products will fluctuate with the change of time, and the latent regulation may have great inspiration for sunshine company. We can use RBF neural network\cite{li2016nonlinear} to fit (reputation time) function. After getting the fitting curve, we can directly observe the change trend of reputation. Take the pacifier for example,
+
+\begin{itemize}
+	\item First of all, we select the sample with the most reviews in the pacifier--'philips avent bpa free soothie pacifier, 0-3 months, 2 pack' with 833 reviews
+	\item Then we use the reputation transformation model to get the reputation of all samples
+	\item Then, taking one day as the unit time, RBF neural network is used to fit the reputation and time
+	\item Finally, according to the fitting curve, we find that the reputation of Philips pacifier has a minimum value on May 30, 2015 and a maximum value on May 10, 2015. In the next question, the causes of the maxima and minima are analyzed.
+\end{itemize}
+
+\subsubsection{Indication of potentially successful or failing product}
+As mentioned above, reputation will fluctuate with time, so the curve we fit will naturally have inflection point. Therefore, we define that if the curve will usher in a maximum value, the product will become a potential successful product; if the curve will usher in a minimum value, the product will become a potential failure product.
+
+In order to facilitate processing, we only consider a set of maxima and minima of the curve when modeling. We can cluster the stars and reviews near the maxima and minima of the curve to find the topic words and stars with the highest word frequency. When these themes and stars appear, it means that the reputation of the product will probably usher in a turning point.
 \section{Assumptions and justifications}
 
 To simplify the problem, we strive for the following assumptions:
@@ -1008,8 +1033,19 @@ To mitigate the plastic waste problem, we establish a linear programming base mo
 \bibitem{CGE}CGE model-encyclopedia of MBA think tanks. https://wiki.mbalib.com/wiki/CGE. Accessed 18 Feb. 2020.
 \bibitem{Analytic}Analytic Hierarchy Process - Wikipedia. https://en.wikipedia.org/wiki/Analytic\_hierarchy\_process. Accessed 18 Feb. 2020.
 
-
+%%%
+\bibitem{zhang2006lord}
+X.~Zhang and C.~Dellarocas, ``The lord of the ratings: is a movie's fate is
+  influenced by reviews?'' \emph{ICIS 2006 proceedings}, p. 117, 2006.
+  
+\bibitem{li2016nonlinear}
+M.~M. Li and B.~Verma, ``Nonlinear curve fitting to stopping power data using
+  rbf neural networks,'' \emph{Expert Systems with Applications}, vol.~45, pp.
+  161--171, 2016.
+  
 \end{thebibliography}
+
+
 
 
 \end{document}

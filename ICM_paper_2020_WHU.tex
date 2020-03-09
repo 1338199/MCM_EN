@@ -103,7 +103,7 @@ Plastic waste; LCA; SVR; EASEWASTE; AHP
 \section{Introduction}
 \subsection{Background}
 
-For e-commerce platforms such as Amazon, there is no shortage of the customer's ratings and reviews. Ratings are usually expressed in five grades of 1 to 5 stars, while reviews are expressed in text form, giving customers the opportunity to show their feedback. But how to make good use of this huge rating and reviewing data is also a big challenge. Taking good advantage of these data can not only help companies to provide targeted customer service, find potential high sales and low sales goods but also help them adjust operational strategies, or enhance products in a timely manner.\cite{zhang2006lord}
+For e-commerce platforms such as Amazon, there is no shortage of the customer's ratings and reviews. Ratings are usually expressed in five grades of 1 to 5 stars, while reviews are expressed in text form, giving customers the opportunity to show their feedback. But how to make good use of this huge rating and reviewing data is also a big challenge. Taking good advantage of these data can not only help companies to provide targeted customer service, find potential high sales and low sales goods but also help them adjust operational strategies, or enhance products in a timely manner\cite{zhang2006lord}.
 
 %The management of the plastic waste is one of the most controversial topic in the discussion on integrated municipal solid waste area.
 
@@ -137,9 +137,14 @@ Now, Sunshine Company plans to launch three new products to sell online: microwa
 %For task 5, TSM is established for predicting the possible timeline and discuss possible relevant circumstances, then write a specific memo for ICM.
 
 \section{Model Analysis}
-\subsection{Analysis of task 1}
-\subsection{Analysis of task 2}
-\subsubsection{Rating-review based reputation model}
+\subsection{Data analysis based on LDA and Spearman correlation coefficient}
+The product data given contains a lot of information, but the deep-seated information information must be processed through information mining so that it can be used for Sunshine Company. 
+
+During the mining process, there must be some invalid data, so we filter it through data cleaning. Secondly, for the non numerical field in the data -- review, we need to make qualitative analysis. After the key words in the reviews are classified by LDA model\cite{blei2003latent}, we can get the quantitative results. 
+
+Thirdly, we make statistics on the comment itself, and get the characteristic information such as sentence number, average sentence length, etc. And finally, we analyze internal relationship between star ratings and helpful ratings and quantified reviews features by Spearman correlation coefficient\cite{myers2004spearman}.
+
+\subsection{Rating-review based reputation model}
 \indent We can infer the reputation of a product from its star rating and reviews. The better the reputation of a product, the higher the potential sales volume of the product. 
 
 Here, we can't simply measure the reputation of a product by star rating or evaluation alone, because there are often situations of "five star with negative feedback" or "one star with praise". Therefore, we integrate star ratings and reviews to build a reputation model. By comparing the reputation of products, Sunshine Company can enhance the stock and publicity of products with high reputation.
@@ -150,7 +155,7 @@ In order to consider the credibility of the reviews, we also consider several fi
 
 By modeling and calculating the pacifier samples with more than 25 comments from July to August 2015, we find that in July to August, the reputation of sample 'wubbanub soft toy and pacifier' is higher and the sales prospect is the largest; the reputation of 'Philips aventbpa free another pacifier, 3 + months, green, 2 count' is the lowest and the sales prospect is the worst.
 
-\subsubsection{Relations between time and reputation}
+\subsection{Relations between time and reputation}
 The reputation of products will fluctuate with the change of time, and the latent regulation may have great inspiration for sunshine company. We can use RBF neural network\cite{li2016nonlinear} to fit (reputation time) function. After getting the fitting curve, we can directly observe the change trend of reputation. Take the pacifier for example,
 
 \begin{itemize}
@@ -160,31 +165,38 @@ The reputation of products will fluctuate with the change of time, and the laten
 	\item Finally, according to the fitting curve, we find that the reputation of Philips pacifier has a minimum value on May 30, 2015 and a maximum value on May 10, 2015. In the next question, the causes of the maxima and minima are analyzed.
 \end{itemize}
 
-\subsubsection{Indication of potentially successful or failing product}
+\subsection{Indication of potentially successful or failing product}
 As mentioned above, reputation will fluctuate with time, so the curve we fit will naturally have inflection point. Therefore, we define that if the curve will usher in a maximum value, the product will become a potential successful product; if the curve will usher in a minimum value, the product will become a potential failure product.
 
 In order to facilitate processing, we only consider a set of maxima and minima of the curve when modeling. We can cluster the stars and reviews near the maxima and minima of the curve to find the topic words and stars with the highest word frequency. When these themes and stars appear, it means that the reputation of the product will probably usher in a turning point.
 
 In our experiment, it is found that when 'baby cant' and 2-3 stars appear, the reputation of the product will decline, so the product will become a potential failure product; when 'baby love' and 4-5 stars appear, the reputation of the product will rise, and the product will become a potential success product.
 \section{Assumptions and justifications}
-
 To simplify the problem, we strive for the following assumptions:
-
 \begin{itemize}
+	\item Users can't see the rating stars of other users long ago. 
 	
-	\item \textbf{The mass of annual plastic production equals to that of the annual plastic waste.} On the one hand, every pound of plastic produced will turn into waste. On the other hand, the lifeline of most sorts of plastic is under 20 so that given situation will not change acutely\cite{Geyer}.
+	\item Higher product reputation means better sales prospects.
 	
-	\item \textbf{Throughout the life cycle of plastic, the impact of plastic on environment in use phase is negligible.} Main environment issues that are related to plastic merely when it is produced or managed\cite{book}.
+	\item Star ratings in a time period satisfies the normal distribution.
+	\item The head and body of a review are always consistent.
+	\item Poor reviews with high star rating exists.
+	\item Positive reviews with low star rating also exist.
+	\item Reviews are more valuable than ratings.
 	
-	\item \textbf{Aiming to make plastic waste safely be mitigated, any waste should not be landfilled.} While it is extremely hard for plastic to biodegrate in solid, landfills are in great shortage.\cite{book}.
-	
-	\item \textbf{All the plastic waste produced will be managed.} In the long run, the NET plastic waste discarded in natural environment will approach zero by governments and NGOs’ efforts.
-	
-	\item \textbf{The proper quantity of pollutant emission of plastic waste should depend on the contribution of plastic industry to the gross domestic products.} The pollutant emission of plastic waste is just an ordinary part of the total emission, so the responsibility of environmental protection it takes should also be the proportional part, which is roughly estimated by the percentage of GDP that plastic industry contributes.
-	
-	\item \textbf{All the plastic waste is mechanically sorted from plastic waste prior to incineration.} In fact, waste incineration plants are generally very formal and will complete the sorting work. Otherwise, they will be banned soon.
-	
-	\item \textbf{The material recycling facilities(MRFs) that sort and upgrade the received waste stream is the only way to recycled sorted PW.} There is no other mature processing method, and this method is used almost everywhere.
+%	\item \textbf{The mass of annual plastic production equals to that of the annual plastic waste.} On the one hand, every pound of plastic produced will turn into waste. On the other hand, the lifeline of most sorts of plastic is under 20 so that given situation will not change acutely\cite{Geyer}.
+%	
+%	\item \textbf{Throughout the life cycle of plastic, the impact of plastic on environment in use phase is negligible.} Main environment issues that are related to plastic merely when it is produced or managed\cite{book}.
+%	
+%	\item \textbf{Aiming to make plastic waste safely be mitigated, any waste should not be landfilled.} While it is extremely hard for plastic to biodegrate in solid, landfills are in great shortage.\cite{book}.
+%	
+%	\item \textbf{All the plastic waste produced will be managed.} In the long run, the NET plastic waste discarded in natural environment will approach zero by governments and NGOs’ efforts.
+%	
+%	\item \textbf{The proper quantity of pollutant emission of plastic waste should depend on the contribution of plastic industry to the gross domestic products.} The pollutant emission of plastic waste is just an ordinary part of the total emission, so the responsibility of environmental protection it takes should also be the proportional part, which is roughly estimated by the percentage of GDP that plastic industry contributes.
+%	
+%	\item \textbf{All the plastic waste is mechanically sorted from plastic waste prior to incineration.} In fact, waste incineration plants are generally very formal and will complete the sorting work. Otherwise, they will be banned soon.
+%	
+%	\item \textbf{The material recycling facilities(MRFs) that sort and upgrade the received waste stream is the only way to recycled sorted PW.} There is no other mature processing method, and this method is used almost everywhere.
 	
 \end{itemize}
 
@@ -223,6 +235,117 @@ Important symbols that in this article are listed in Table \ref{notation}.
 \end{table}
 
 \section{Model Construction}
+\subsection{Data analysis model based on LDA and Spearman correlation coefficient}
+\subsubsection{Data analysis model based on LDA}
+The product data contains thousands of items, so mining the connotation information is very helpful for Sunshine Company.
+
+First of all, we clean the data: remove the data that contains empty fields, random codes and other invalid fields. 
+
+Then we use Latent Dirichlet Allocation(LDA)\cite{blei2003latent} to do analysis, because LDA can identify the hidden subject information in large-scale document collection in an unsupervised way. What's more, it can transform each document sample into a word frequency vector about the topic, thus transforming the text information into intuitive numerical information. Our LDA topic classification modeling is as follows:
+\begin{enumerate}
+	\item Do text preprocessing on reviews.
+		\begin{enumerate}
+			\item Unify case and remove symbols and numbers from review text
+			\item Delete manually filtered stop words and calibrate misspelled words.
+			\item Do word normalization based on stem extraction.
+		\end{enumerate}
+	\item The key words are extracted and selected by counting the frequency distribution of every word, and then integrated with the high frequency key words selected by the 2-gram model\cite{zhang2006lord}, so that each review is transformed into a key words array.
+	\item Put the reviews data into LDA model in the form of  keyword array, and set the number of different topics, then train.
+	\item According to coherence score, the number of topics $T_{n}$ that are most suitable is filtered, and the topics are assigned according to the usefulness of keywords in each topic.
+	\item Each review is converted into topic frequency vector $R_{vec}=[R_{t\_1},...,R_{t\_n}]$  (where $R_{t\_i}$ is the keyword frequency score under the $i$th topic) according to its keyword array. And take the topic score of the maximum word frequency as the review score (marked as $R_{\beta}$).
+\end{enumerate}
+The results of LDA subject classification are as follows (take microwave oven as an example):\\
+\begin{figure}[H] %H为当前位置，!htb为忽略美学标准，htbp为浮动图形
+	\centering %图片居中
+	\includegraphics[width=0.5\textwidth]{figures/topic_distribution.png} %插入图片，[]中设置图片大小，{}中是图片文件名
+	\caption{The Distribution of Three Topics with Coherence Score 0.543} %最终文档中希望显示的图片标题
+	\label{fig4} %用于文内引用的标签
+\end{figure}
+\begin{figure}[H]
+	\centering  %图片全局居中
+	\subfigure[topic 1]{
+	\label{Fig.sub.sky21}
+	\includegraphics[width=0.3\textwidth]{figures/topic3.png}}
+	\subfigure[topic 2]{
+	\label{Fig.sub.sky22}
+	\includegraphics[width=0.3\textwidth]{figures/topic2.png}}
+	\subfigure[topic 3]{
+	\label{Fig.sub.sky22}
+	\includegraphics[width=0.3\textwidth]{figures/topic1.png}}
+	\caption{Keyword Cloud for Each Topic in Microwave }
+	\label{Fig.sky2}
+\end{figure}
+From the figure, we can see that 
+\begin{itemize}
+	\item The distance between the three categories is relatively large, and the overall topics consistency score is high. 
+	\item According to the key words in the three topics, we can see that topic1 mainly contains a kind of positive emotional key words such as 'perfect', 'nice', 'love' etc;
+	\item Topic3 contains some feedback on 'problems' and other specific topics of poor functional evaluation; 
+	\item The key words of Topic 2 are relatively neutral, so the three topics are scored 3,2,1 respectively (corresponding to good reviews, medium reviews and poor reviews)
+\end{itemize}
+And the other two products are also scored in this way which is not show in the paper due to space constraints:
+\begin{table}[H]
+	\center
+	\caption{ Microwave's Topic Score Based on Keyword Attribute}
+	\label{type}
+	\begin{tabular}{c|c|c}
+		\hline
+		\textbf{Topic} & \textbf{Key Words} & \textbf{Score} \\ \hline
+		TOPIC1                & nice, good, perfect, cook, small, love, need, etc        		&	3          \\ 
+		TOPIC2                & paint, door, button, back, light, etc  &	2                 \\ 
+		TOPIC3                & repair, problem, return, not work, etc                   		&	1	\\ \hline
+	\end{tabular}
+\end{table}
+\subsubsection{Spearman Correlation Coefficient}
+We make characteristic statistics on the reviews, and get the number of sentences in each reviews $R_{s\_{num}}$ and the average length of each sentence $R_{l\_{avg}}$. 
+
+Then we use quantile-based discretization assignment method to grade the continuous value features.
+
+And last, we use spearman correlation coefficient formula as follows to calculate the correlation between the star rate $R {\alpha} $, and the quantitative feature of reviews text ${\{R_{\beta},r_{h},R_{s\_{num}},R_{l\_{avg}},R_{vec}\}}$:
+\begin{equation}
+	{\frac{\sum_{i}^{n}(a_{i}-\bar{a})(b_{i}-\bar{b})}{{[\sum_{i}^{n}{(a_{i}-\bar{a})}^2\sum_{i}^{n}({b_{i}-\bar{b})}^2]}^{\frac{1}{2}}}}
+\end{equation} 
+
+where $a,b$ are two characteristic sequences respectively, ${\bar{a}}$ and ${\bar{b}}$ are the average values of the two sequences respectively.
+
+Taking the microwave oven as an example, the following results are obtained:
+\begin{table}[H]
+	\center
+	\caption{Correlation between Star Rating and Review features}
+	\label{type}
+	\begin{tabular}{c|c}
+		\hline
+		\textbf{Feature - Feature} & \textbf{Correlation value} \\ \hline
+		star rating$R_{\alpha}$ -  topic score $R_{\beta}$             & 0.651                    \\ 
+		star rating$R_{\alpha}$ -  review sentence num  $R_{s\_{num}}$              & 0.209                     \\ 
+		star rating$R_{\alpha}$ -  review sentence average length  $R_{l\_{avg}}$              & -0.121                     \\ 
+		star rating$R_{\alpha}$ -  review helpful votes  $r_{h}$                & -0.301 	\\ \hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\center
+	\caption{Correlation Among Review Features}
+	\label{type}
+	\begin{tabular}{c|c}
+		\hline
+		\textbf{Feature - Feature} & \textbf{Correlation value} \\ \hline
+		helpful votes$R_{\alpha}$ -   $R_{t\_{mid}}$               & 0.493                     \\ 
+		review helpful votes$R_{\alpha}$ -  review sentence average length  $R_{l\_{avg}}$             & 0.459                    \\
+		review helpful votes$R_{\alpha}$ -  review sentence num  $R_{s\_{num}}$              & 0.213                     \\ 
+		review helpful votes$R_{\alpha}$ -  $R_{t\_{low}}$                & -0.390 	\\ \hline
+	\end{tabular}
+	\label{table2}
+\end{table}
+ In table.\ref{table2}, we use $R_{t\_{mid}}$, $R_{t\_{low}}$ to represent the feature: word frequency score of the topic in middle evaluation and in low  evaluation.
+ 
+ From above tables, we can draw the following conclusions:
+\begin{enumerate}
+	\item The correlation coefficient between star rating and topic score $R_{\alpha}$ is the highest, and it is positive correlation, which shows that some complimentary high-frequency keywords in the positive topic are closely related to the high score ratio of customers. 
+	\item Helpful reviews tend to be rated at low and medium star levels.
+	\item The highest correlation coefficient between helpful votes and the score of the subject in the middle evaluation indicates that the helpful reviews of these commodities is relatively more pertinent, more objective, and will not praise excessively or turn to the bad side.
+	\item The positive correlation between helpful votes and review sentence average length and review sentence number indicates that helpful reviews are relatively long.
+	\item According to the above information, Sunshine Company should pay more attention to the longer reviews with medium star rating and more keywords, so as to find out customers' concerns and ideas and improve products.
+\end{enumerate}
 \subsection{Rating-Review Based Reputation Model}
 \label{task_b}
 By modeling ratings and reviews, we can get product reputation, and higher reputation means higher potential sales volume, which can help Sunshine Company make better decisions. The modeling process is as follows:
@@ -337,30 +460,47 @@ Take pacifier for example, according to the Fig.\ref{curve_pacifier}, The maximu
 \caption{World Cloud for Reviews around May 30, 2015}	  
 \end{minipage}
 \end{figure}
-From the clustering results, we conclude that:
+From the clustering results, we can conclude that:
 \begin{itemize}
 	\item If the reviews are full of words like 'baby love', 'easy to hold', 'onto love' with 4-5 star ratings, it means that the reputation of the product will usher in a maximum value and it is a potential successful product. So it's recommended for Sunshine Company to grow the portability of pacifiers.
 	\item If the reviews are full of words like 'baby cant', 'baby not', 'without soothing' with 2-3 star ratings, it means that the reputation of the product will usher in a minimum value and it is a potential failing product. And we recommend Sunshine Company to fix the soothing problem with the specific pacifier.
 \end{itemize}
+
+\section{Sensitivity Analysis}
+\subsection{Hyper-parameter $\beta$}
+In our reputation model, the super parameter $\beta$ is set to be related to the relationship coefficient $W_{r}$. And we think e-commerce product reviews are more important than ratings\cite{zhang2006lord}, especially the reviews written after experiencing the product, which can better reflect the customer experience. So $\beta$ in our model increased the weight of reviews.
+
+In fact, we find that our model is robust to $\beta$, i.e. slight fluctuations in $\beta$, will not affect the final result of reputation:
+
+We changed $W_{r}$from 0.61 to 0.2 and 1.2 in Eq.\ref{hyperbeta} respectively, and recalculated the samples in section.\ref{task_b}. The results are as follows:
+\begin{figure}[H] 
+\begin{minipage}[t]{0.48\linewidth}	
+	\centering 
+	\includegraphics[width=1\textwidth]{figures/reputations_n.png} 
+	\caption{The reputations of six samples calculated from July to August 2015 with lower $\beta$}
+	\label{reputations_n} %用于文内引用的标签
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\linewidth}	
+	\centering 
+	\includegraphics[width=1\textwidth]{figures/reputations_nn.png} 
+	\caption{The reputations of six samples calculated from July to August 2015 with higher $\beta$}
+	\label{reputations_nn} %用于文内引用的标签
+\end{minipage}
+\end{figure}
+
+We can see that although the absolute value of reputation has changed, the relative value remained the same. Sample2 and Sample4 are still the first reputable products, and Sample5 is still the product with the worst reputation among the samples.
 \section{Strength and weakness}
 
-%In this section, we will discuss some other details about the model.
-
-The strengths and Weaknesses of our model are summarized as follows:
-
 \subsection{Strengths}
+\textbf{Model rationality.} The models we use for reference are all models that have been proved to have strong generalization ability, and our own reputation model also shows certain robustness to hyper-parameters.
 
-\textbf{Model complexity.} Our model incorporates relevant research results and considers many details, making the model complicated enough to include enough factors. Therefore, our model can analyze the situation in specific regions and draw targeted conclusions, which is conducive to practical use.
+\textbf{Reasonable results.} We analyzed the results and found that our results are reasonable and scientific.
 
-\textbf{Agreement between experimental data and real data.} In the process of estimating maximal plastic waste, our model based on PLC theory carefully consider the environmental impact of plastic in different phases of its life cycle rather than merely in the phase of management. What's more, despite the lack of data, our machine learning model still fits the data well. The results of tests on real data sets also validate the performance of our model, where experimental data and real data agrees well. 
-
-\textbf{The amount of data.} In the process of modeling, we extensively collected relevant industry data, making the model sufficiently universal and extensible. To our knowledge, few studies on the relationship between plastics and the environment have been able to model using so much data.
+\textbf{Make good use of given data.} We eliminate the redundant information and interference information in the given data, and fully mine the potential data wealth in the remaining information.
 
 \subsection{Weaknesses}
-
-\textbf{Data accuracy of the model.} In order to consider as many factors as possible, our model introduces more parameters. This makes it difficult to obtain our data, especially when related research is very scarce. Further we will try to simplify the model for different scenarios and improve the usability of the model.
-
-\textbf{Macro analysis.} Our model is too detail-oriented and has insufficient performance in macro analysis. In global research, our model encountered some difficulties and showed some uncertainty. In the future, we will try to explore the relationship between the overall situation and the details, and strive to let our model to show the superiority in global problems, too.
+\textbf{Lack of sales in given data.} If the sales volume corresponding to the product can be provided in the given data, then our model will be better tested in practice.
 
 \section{Conclusion}
 
@@ -368,38 +508,7 @@ To mitigate the plastic waste problem, we establish a linear programming base mo
 
 \newpage
 
-%% Generate the Memorandum, if it's needed.
-\memoto{Marketing Director of Sunshine Company}
-\memofrom{Team 2013573}
-\memosubject{A Wealth of Data}
-\memodate{March 9, 2020}
-%\logo{\LARGE I'm pretending to be a LOGO!}
-\begin{memo}[\textbf{Letter to Sunshine Company}]
-\noindent Dear Director:
 
-Thank you very much for your trust and hire our team to solve this important problem for you. As we all know, there is a lot of valuable information in the product ratings and reviews. We hope that the information our team digs from the data of pacifier, microwave and hair dryer can help your company to make reasonable sales strategy, and enhance effectiveness of products timely. We hope our suggestions can be helpful to your company. 
-
-%第一问的分析与结果结论，以及意见. 
-%
-As for how to integrate product ratings and reviews to provide effective information for your company, our team first quantified the text reviews effectively, and then made full use of helpful votes, vine to trace the credibility of the reviews. At the same time, with the thoughts of average, logarithmic smoothing and exponential amplification of differences, a robust model is established, because our model can always give the correct relative reputation value between products. We believe that a good reputation can potentially bring a better sales volume to a product, so we suggest that your company can evaluate the reputation of pacifier, microwave, hair dryer and other products, and then increase the stock of products with high reputation or amplify their publicity. As mentioned in our paper, wubbanub infant pacifier - giraffe is the first choice for online sales of pacifier products from July to August 2015.
-
-Our fitting model uses a powerful RBF neural network to fit the relationship between reputation and time successfully, which can help us better summarize and predict the change of reputation of products. Furthermore we can excavate the potential factors of product success or failure from the maximum and minimum values. As we mentioned in the article, when words like 'baby cant' or 'without soothing' with 2-3 stars appear, we should be extra careful. This is the product the reputation of which  will begin to decline. We recommend your company to improve your products in time according to such signs. When word like 'baby love' or 'easy to hold' with 4-5 stars appears, your company can safely increase the inventory of the product, because the product is about to sell well.
-%
-%
-%第d问的分析与结果结论，以及意见. 
-%
-%第e问的分析与结果结论，以及意见. 
-
-We would be very pleased if our suggestion could be of benefit to your company. Wish the given advice above would contribute to your work! 
-
-\begin{flushright}
-	Your sincerely\\
-	 Team 2013573
-\end{flushright}
-
-\thispagestyle{empty}
-
-\end{memo}
 \begin{thebibliography}{99}
 
 %%%
@@ -428,11 +537,52 @@ T.~Subkhankulova and F.~J. Livesey, ``Comparative evaluation of linear and
 X.~Zhang and C.~Dellarocas, ``The lord of the ratings: is a movie's fate is
   influenced by reviews?'' \emph{ICIS 2006 proceedings}, p. 117, 2006.
   
-
+\bibitem{blei2003latent}
+D.~M. Blei, A.~Y. Ng, and M.~I. Jordan, ``Latent dirichlet allocation,''
+  \emph{Journal of machine Learning research}, vol.~3, no. Jan, pp. 993--1022.
+  
+\bibitem{myers2004spearman}
+L.~Myers and M.~J. Sirois, ``Spearman correlation coefficients, differences
+  between,'' \emph{Encyclopedia of statistical sciences}, vol.~12, 2004.
+  
+\bibitem{zhang2006lord}
+X.~Zhang and C.~Dellarocas, ``The lord of the ratings: is a movie's fate is
+  influenced by reviews?'' \emph{ICIS 2006 proceedings}, p. 117, 2006.
 \end{thebibliography}
 
+\newpage
+%% Generate the Memorandum, if it's needed.
+\memoto{Marketing Director of Sunshine Company}
+\memofrom{Team 2013573}
+\memosubject{A Wealth of Data}
+\memodate{March 9, 2020}
+%\logo{\LARGE I'm pretending to be a LOGO!}
+\begin{memo}[\textbf{Letter to Sunshine Company}]
+\noindent Dear Director:
 
+Thank you very much for your trust and hire our team to solve this important problem for you. As we all know, there is a lot of valuable information in the product ratings and reviews. We hope that the information our team digs from the data of pacifier, microwave and hair dryer can help your company to make reasonable sales strategy, and enhance effectiveness of products timely. We hope our suggestions can be helpful to your company. 
 
+%第一问的分析与结果结论，以及意见. 
+%
+As for how to integrate product ratings and reviews to provide effective information for your company, our team first quantified the text reviews effectively, and then made full use of helpful votes, vine to trace the credibility of the reviews. As the result, a robust model is established. We believe that a good reputation can potentially bring a better sales volume to a product, so we suggest that your company can evaluate the reputation of pacifier, microwave, hair dryer and other products, and then increase the stock of products with high reputation or amplify their publicity. As mentioned in our paper, 'wubbanub infant pacifier - giraffe' is the first choice for online sales of pacifier products from July to August 2015.
+
+Our fitting model uses a powerful RBF neural network to fit the relationship between reputation and time successfully, which can help us better summarize and predict the change of reputation of products. Furthermore we can excavate the potential factors of product success or failure from the maximum and minimum values. As we mentioned in the article, when words like 'baby cant' or 'without soothing' with 2-3 stars appear, we should be extra careful. This is the product the reputation of which  will begin to decline. We recommend your company to improve your products in time according to such signs. When word like 'baby love' or 'easy to hold' with 4-5 stars appears, your company can safely increase the inventory of the product, because the product is about to sell well.
+
+Our statistical model uses one-way ANOVA. After analyzing the average star rating of products in the past period of time and customers' comments of products, we find that when customers see products with lower star rating, they are more willing to publish negative comments; When they see products with higher star rating, they are more willing to publish positive comments. Therefore, we suggest that your company should try its best to improve the products before launching the products, so as to avoid more bad comments caused by low star rating, which will lead to a vicious circle.
+
+We also finds that some words in the comments are related to specific star ratings. For example, the reviews with "disappointed" are closely related to the star rating of one star, reviews with "love" and "great" are closely related to the star rating of five stars. Therefore, we suggest that companies should focus on extracting reviews with emotional words, research and analysis, and optimize products in a timely manner.
+%第e问的分析与结果结论，以及意见. 
+
+We would be very pleased if our suggestion could be of benefit to your company. Wish the given advice above would contribute to your work! 
+
+\begin{flushright}
+	Your sincerely\\
+	 Team 2013573
+\end{flushright}
+
+\thispagestyle{empty}
+
+\end{memo}
 
 \end{document}
 %%
